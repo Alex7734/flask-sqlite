@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Problem List
+{% endblock %}
+
+{% block content %}
+<div class="problem-list">
+    {% for problem in problems %}
+    <div class="problem-item">
+        <div class="row">
+            <div class="col-10">
+                <div class="problem-title">
+                    <strong>{{ problem.name }}</strong>
+                </div>
+                <div class="problem-category">
+                        {{ problem.category }} <span class="badge bg-secondary">{{ problem.difficulty }}</span>
+                </div>
+            </div>
+            <div class="problem-details-solve col-2 mb-4 float-end">
+                <a href="{{ url_for('problems.problem_details', problem_id=problem.id) }}" class="btn btn-primary">Solve!</a>
+            </div>
+        </div>
+
+        <div class="problem-details">
+            <div class="row m-3">
+                <div class="col-10">
+                    <p class="lead">{{ problem.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if 'loggedin' in session %}
+    <div class="my-3">
+        <a href="{{ url_for('problems.my_submissions') }}" class="btn btn-info">View My Submissions</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Problem Details
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h1>{{ problem.name }}</h1>
+            <p><strong>Category:</strong> {{ problem.category }}</p>
+            <p><strong>Difficulty:</strong> {{ problem.difficulty }}</p>
+            <div class="problem-statement">
+                <h2>Problem Statement</h2>
+                <p>{{ problem.description }}</p>
+                <button class="btn btn-info" onclick="toggleSolution()">View Solution</button>
+                <div id="solutionCard" class="card mt-2" style="display:none;">
+                    <div class="card-body">
+                        <h5 class="card-title">Example Solution</h5>
+                        <pre><code>{{ solutions.example_code | safe }}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Submit Your Solution</h2>
+            <form action="{{ url_for('problems.submit_solution_route') }}" method="POST">
+                <input type="hidden" name="problem_id" value="{{ problem.id }}">
+                <textarea name="submission_code" rows="10" cols="70" required></textarea><br>
+                <button type="submit" class="btn btn-primary">Submit Solution</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSolution() {
+        const solutionCard = document.getElementById('solutionCard');
+        if (solutionCard.style.display === "none") {
+            solutionCard.style.display = "block";
+        } else {
+            solutionCard.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+My Submissions
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">My Submissions</h2>
+    <div class="list-group">
+        {% for submission in submissions %}
+        <a href="{{ url_for('problems.problem_details', problem_id=submission.problem_id) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ submission.problem_name }}</h5>
+                <small>Submitted on {{ submission.submission_date }}</small>
+            </div>
+            <p class="mb-1">Submission Code: {{ submission.submission_code }}</p>
+            <small>Problem ID: {{ submission.problem_id }}</small>
+        </a>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            No submissions found.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

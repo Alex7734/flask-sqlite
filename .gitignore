@@ -1,0 +1,8 @@
+/env
+/.idea
+__pycache__/
+/.env
+.vscode/
+database.db
+.env
+
