@@ -9,13 +9,17 @@ My Submissions
     <h2 class="mb-3">My Submissions</h2>
     <div class="list-group">
         {% for submission in submissions %}
-        <a href="{{ url_for('problems.problem_details', problem_id=submission.problem_id) }}" class="list-group-item list-group-item-action">
+        <a href="{{ url_for('problems.problem_details', problem_id=submission.problem_id) }}" class="list-group-item list-group-item-action my-3">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{ submission.problem_name }}</h5>
+                <h4 class="mb-1">{{ submission.problem_name }}</h4>
                 <small>Submitted on {{ submission.submission_date }}</small>
             </div>
-            <p class="mb-1">Submission Code: {{ submission.submission_code }}</p>
             <small>Problem ID: {{ submission.problem_id }}</small>
+            <small>Score: {{ submission.score }}</small>
+            <div class="card-body">
+                <h6 class="card-title">Submission Code:</h6>
+                <pre><code>{{ submission.submission_code | safe }}</code></pre>
+            </div>
         </a>
         {% else %}
         <div class="alert alert-info" role="alert">

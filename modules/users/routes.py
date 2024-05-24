@@ -12,7 +12,7 @@ def login():
         account = get_user_by_username_password(username, password)
         if account:
             log_user_in(account)
-            return redirect(url_for('index'))
+            return redirect(url_for('problems.index'))
         else:
             return 'Login failed. Check your username and password!'
     return render_template('users/login.html')
@@ -32,5 +32,5 @@ def register():
 @users.route('/logout')
 def logout():
     log_user_out()
-    return redirect(url_for('index'))
+    return redirect(url_for('problems.index'))
 

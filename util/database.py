@@ -41,6 +41,7 @@ def init_db():
                 problem_id INTEGER NOT NULL,
                 submission_code TEXT NOT NULL,
                 submission_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                score INTEGER DEFAULT 0,
                 FOREIGN KEY (user_id) REFERENCES USERS(id),
                 FOREIGN KEY (problem_id) REFERENCES problems(id)
             );
