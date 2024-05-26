@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+Add New Problem
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add New Problem</h2>
+    <form action="{{ url_for('problems.add_problem_route') }}" method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label">Problem Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="category_name" class="form-label">Category</label>
+            <select class="form-control" id="category_name" name="category_name" required onchange="newCategoryOption();">
+                <option value="">Select or add a new category...</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+                <option value="new">-- Add New Category --</option>
+            </select>
+            <label for="new_category"></label><input type="text" class="form-control mt-2" id="new_category" name="new_category" placeholder="Or type a new category here..." style="display:none;" oninput="updateCategorySelection();">
+        </div>
+        <div class="mb-3">
+            <label for="example_code" class="form-label">Solution Example</label>
+            <textarea class="form-control" id="example_code" name="example_code" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Problem</button>
+    </form>
+</div>
+{% endblock %}
+
+    <script>
+        function newCategoryOption() {
+            var select = document.getElementById('category_name');
+            var input = document.getElementById('new_category');
+            if (select.value === "new") {
+                input.style.display = 'block';
+            } else {
+                input.style.display = 'none';
+                input.value = '';
+            }
+        }
+
+        function updateCategorySelection() {
+            var input = document.getElementById('new_category');
+            var select = document.getElementById('category_name');
+            if (input.value.trim() !== '') {
+                select.value = "new";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            newCategoryOption();
+        });
+    </script>
+
+
+</script>

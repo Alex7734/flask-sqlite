@@ -5,36 +5,102 @@ Problem List
 {% endblock %}
 
 {% block content %}
-<div class="problem-list">
-    {% for problem in problems %}
-    <div class="problem-item">
-        <div class="row">
-            <div class="col-10">
-                <div class="problem-title">
-                    <strong>{{ problem.name }}</strong>
-                </div>
-                <div class="problem-category">
-                        {{ problem.category }} <span class="badge bg-secondary">{{ problem.difficulty }}</span>
-                </div>
-            </div>
-            <div class="problem-details-solve col-2 mb-4 float-end">
-                <a href="{{ url_for('problems.problem_details', problem_id=problem.id) }}" class="btn btn-primary">Solve!</a>
-            </div>
-        </div>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-9">
+            <div class="problem-filters mb-3 d-flex align-items-center">
+                <form id="search-form" method="GET" action="{{ url_for('problems.index') }}" class="d-inline w-50 me-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="name" placeholder="Search by name" value="{{ request.args.get('name', '') }}">
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    </div>
+                </form>
 
-        <div class="problem-details">
-            <div class="row m-3">
-                <div class="col-10">
-                    <p class="lead">{{ problem.description }}</p>
+                <form id="category-form" method="GET" action="{{ url_for('problems.index') }}" class="d-inline me-2">
+                    <select class="form-select" name="category" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}" {% if request.args.get('category', '') == category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+
+                <form id="difficulty-form" method="GET" action="{{ url_for('problems.index') }}" class="d-inline">
+                    <select class="form-select" name="difficulty" onchange="this.form.submit()">
+                        <option value="">All Difficulties</option>
+                        <option value="1" {% if request.args.get('difficulty', '') == '1' %}selected{% endif %}>Easy</option>
+                        <option value="2" {% if request.args.get('difficulty', '') == '2' %}selected{% endif %}>Medium</option>
+                        <option value="3" {% if request.args.get('difficulty', '') == '3' %}selected{% endif %}>Hard</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="problem-list">
+                {% for problem in problems %}
+                <div class="problem-item card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-10">
+                                <div class="problem-title">
+                                    <strong>{{ problem.name }}</strong>
+                                </div>
+                                <div class="problem-category text-muted">
+                                    {{ problem.category }} <span class="badge bg-secondary">{{ problem.difficulty }}</span>
+                                </div>
+                            </div>
+                            <div class="problem-details col-2 text-end">
+                                <a href="{{ url_for('problems.problem_details', problem_id=problem.id) }}" class="btn btn-primary">Solve!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="profile-info col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    {% if profile_info %}
+                    <h3>{{ profile_info.username }}</h3>
+                    <p>Problems Submitted: {{ profile_info.problems_submitted }}</p>
+                    <p>Average Score: {{ profile_info.average_score }}</p>
+                    {% endif %}
+                    <div class="mt-3">
+                        <a href="{{ url_for('problems.my_submissions') }}" class="btn btn-info w-100">View My Submissions</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    {% endfor %}
-    {% if 'loggedin' in session %}
-    <div class="my-3">
-        <a href="{{ url_for('problems.my_submissions') }}" class="btn btn-info">View My Submissions</a>
-    </div>
-    {% endif %}
 </div>
+
+<script>
+    let debounceTimeout;
+
+    document.querySelector('input[name="name"]').addEventListener('input', function() {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            document.getElementById('search-form').submit();
+        }, 300);
+    });
+</script>
+
+<style>
+    .problem-filters {
+        gap: 10px;
+    }
+
+    .problem-item .problem-details {
+        display: none;
+    }
+
+    .problem-item:hover .problem-details {
+        display: block;
+    }
+
+    .profile-info .card {
+        margin-top: 20px;
+    }
+</style>
+
 {% endblock %}
